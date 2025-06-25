@@ -1,4 +1,4 @@
-CREATE TABLE homocide_listings AS
+CREATE TABLE homicide_listings AS
 SELECT DISTINCT
   l.name,
   COUNT(h.*) AS nearby_homicide_count
