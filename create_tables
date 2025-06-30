@@ -20,7 +20,7 @@ FROM nyc_listings_bnb AS l
 JOIN nyc_subway_stations AS s
   ON ST_DWithin(
        ST_Transform(l.listing_geom, 2263), 
-       ST_Transform(h.geom, 2263), 
+       ST_Transform(s.geom, 2263), 
        500
      )
 GROUP BY l.name
