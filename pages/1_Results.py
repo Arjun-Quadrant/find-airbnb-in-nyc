@@ -22,17 +22,17 @@ sql_str = "SELECT nearby_homicide_count AS safety FROM homicide_listings"
 cursor.execute(sql_str)
 df = pd.DataFrame(cursor.fetchall())
 
-safety_q1 = int(df.quantile(0.33))
-safety_q2 = int(df.quantile(0.66))
-max_safety = int(df.max())
+safety_q1 = int(df.quantile(0.33).iloc[0])
+safety_q2 = int(df.quantile(0.66).iloc[0])
+max_safety = int(df.max().iloc[0])
 
 sql_str = "SELECT nearby_subway_count AS count FROM subway_listings"
 cursor.execute(sql_str)
 df = pd.DataFrame(cursor.fetchall())
 
-subway_q1 = int(df.quantile(0.33))
-subway_q2 = int(df.quantile(0.66))
-max_subway = int(df.max())
+subway_q1 = int(df.quantile(0.33).iloc[0])
+subway_q2 = int(df.quantile(0.66).iloc[0])
+max_subway = int(df.max().iloc[0])
 
 def query_airbnb(neighborhood, safety, subway, room_type, price, no_price, top_n):
     safety_bar = 0
@@ -111,7 +111,6 @@ if not results:
     st.warning("No listings found.")
 else:
     for i, row in enumerate(results):
-        print(results)
         st.write("Listing ID: ", row[0])
         st.write("Listing Name: ", row[1])
         st.markdown("---")

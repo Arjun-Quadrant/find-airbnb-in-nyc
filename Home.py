@@ -22,9 +22,7 @@ def load_neighborhoods():
     sql_str = "SELECT DISTINCT neighbourhood FROM nyc_listings_bnb ORDER BY neighbourhood"
     cursor.execute(sql_str)
     df = pd.DataFrame(cursor.fetchall(), columns=["name"])
-    print(df)
     return df["name"].tolist()
-
 
 with st.form("airbnb_form"):
 
@@ -41,10 +39,10 @@ with st.form("airbnb_form"):
     cursor.execute(sql)
     df = pd.DataFrame(cursor.fetchall())
     cursor.close()
-    price_q1 = int(df.quantile(0.25))
-    price_q2 = int(df.quantile(0.5))
-    price_q3 = int(df.quantile(0.75))
-    max_price = int(df.max())
+    price_q1 = int(df.quantile(0.25).iloc[0])
+    price_q2 = int(df.quantile(0.5).iloc[0])
+    price_q3 = int(df.quantile(0.75).iloc[0])
+    max_price = int(df.max().iloc[0])
 
     price = st.selectbox("Price Range", ["", f"$0 - ${price_q1}", f"${price_q1} - ${price_q2}", f"${price_q2} - ${price_q3}", f"${price_q3} - ${max_price}"])
     no_price = st.selectbox("Do you want to include listings for which no price is listed?", ["Yes", "No"])
