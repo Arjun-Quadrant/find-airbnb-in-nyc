@@ -8,6 +8,17 @@ from psycopg2 import sql
 from dotenv import load_dotenv
 from streamlit_folium import st_folium
 
+st.markdown("""
+    <style>
+        [data-testid="stSidebar"] {
+            display: none;
+        }
+        [data-testid="collapsedControl"] {
+            display: none;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 load_dotenv()
 
 conn = psycopg2.connect(
@@ -127,4 +138,4 @@ st_folium(m, width=1200, height=600)
 
 # Back link
 if st.button("🔙 Back to Search"):
-    st.switch_page("Home.py")
+    st.switch_page("2_Filters.py")
