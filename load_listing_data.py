@@ -21,6 +21,36 @@ cursor.execute(f"SELECT azure_ai.set_setting('azure_openai.endpoint', '{os.geten
 cursor.execute(f"SELECT azure_ai.set_setting('azure_openai.subscription_key', '{os.getenv('AZURE_OPENAI_KEY')}');")
 
 cursor.execute("""
+    CREATE TABLE homicide_listings AS
+        SELECT DISTINCT
+        l.name,
+        COUNT(h.*) AS nearby_homicide_count
+        FROM nyc_listings_bnb AS l
+        JOIN nyc_homicides AS h
+        ON ST_DWithin(
+            ST_Transform(l.listing_geom, 2263), 
+            ST_Transform(h.geom, 2263), 
+            500
+        )
+        GROUP BY l.name
+        ORDER BY nearby_homicide_count DESC;""")
+
+cursor.execute("""
+    CREATE TABLE subway_listings AS
+        SELECT DISTINCT
+        l.name,
+        COUNT(s.*) AS nearby_subway_count
+        FROM nyc_listings_bnb AS l
+        JOIN nyc_subway_stations AS s
+        ON ST_DWithin(
+            ST_Transform(l.listing_geom, 2263), 
+            ST_Transform(s.geom, 2263), 
+            500
+        )
+        GROUP BY l.name
+        ORDER BY nearby_subway_count DESC;""")
+
+cursor.execute("""
     CREATE TABLE IF NOT EXISTS all_listing_data AS
         (SELECT DISTINCT a.id, a.name, a.longitude, a.latitude, h.nearby_homicide_count, s.nearby_subway_count, a.room_type, a.price, a.neighbourhood 
         FROM nyc_listings_bnb a

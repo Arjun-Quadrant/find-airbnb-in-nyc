@@ -76,7 +76,7 @@ def query_airbnb(neighborhood, safety, subway, room_type, price, no_price, top_n
     include_nulls = True if no_price == "Yes" else False
 
     query = sql.SQL("""
-        SELECT DISTINCT a.id, a.name, a.longitude, a.latitude 
+        SELECT DISTINCT a.id, a.name, a.price, a.longitude, a.latitude 
         FROM nyc_listings_bnb a
         JOIN homicide_listings h ON h.name = a.name
         JOIN subway_listings s ON s.name = h.name
@@ -99,7 +99,6 @@ def query_airbnb(neighborhood, safety, subway, room_type, price, no_price, top_n
         top_n
     ))
     rows = cursor.fetchall()
-    print(rows)
     cursor.close()
     conn.close()
     return rows

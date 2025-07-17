@@ -26,7 +26,7 @@ cursor = conn.cursor()
 
 def query_airbnb(input):
     query = sql.SQL(f"""
-        SELECT DISTINCT a.id, a.name, a.longitude, a.latitude, embedding <=> azure_openai.create_embeddings('{os.getenv("AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME")}', '{input}')::vector AS score
+        SELECT DISTINCT a.id, a.name, a.price, a.longitude, a.latitude, embedding <=> azure_openai.create_embeddings('{os.getenv("AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME")}', '{input}')::vector AS score
         FROM all_listing_data a
         ORDER BY embedding <=> azure_openai.create_embeddings('{os.getenv("AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME")}', '{input}')::vector
         LIMIT 10;
